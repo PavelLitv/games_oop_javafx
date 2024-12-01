@@ -3,6 +3,7 @@ package ru.job4j.chess;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import ru.job4j.chess.firuges.Cell;
+import ru.job4j.chess.firuges.Figure;
 import ru.job4j.chess.firuges.black.BishopBlack;
 
 import static org.assertj.core.api.Assertions.*;
@@ -10,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Disabled("Тесты отключены. Удалить аннотацию после реализации всех методов по заданию.")
 public class LogicTest {
-
     @Test
     public void whenMoveThenFigureNotFoundException()
             throws FigureNotFoundException, OccupiedCellException, ImpossibleMoveException {
@@ -19,5 +19,16 @@ public class LogicTest {
             logic.move(Cell.C1, Cell.H6);
         });
         assertThat(exception.getMessage()).isEqualTo("Figure not found on the board.");
+    }
+
+    @Test
+    public void whenMoveAndFigureOnWayThenOccupiedCellException() throws OccupiedCellException {
+        Logic logic = new Logic();
+        Figure figure = new BishopBlack(Cell.C1);
+        Figure figureOnWay = new BishopBlack(Cell.F4);
+        logic.add(figure);
+        logic.add(figureOnWay);
+        assertThatThrownBy(() -> logic.move(figure.position(), Cell.G5))
+                .isInstanceOf(OccupiedCellException.class);
     }
 }

@@ -27,6 +27,7 @@ public class LogicTest {
         logic.add(figure);
         logic.add(figureOnWay);
         assertThatThrownBy(() -> logic.move(figure.position(), Cell.G5))
-                .isInstanceOf(OccupiedCellException.class);
+                .isInstanceOf(OccupiedCellException.class)
+                .hasMessage("The cell is occupied");
     }
 }
